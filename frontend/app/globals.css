@@ -1,0 +1,156 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #ffffff;
+  color: #2C2C2C;
+  line-height: 1.6;
+}
+
+/* Typography */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+}
+
+.accent-text {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+/* Buttons */
+.btn {
+  @apply px-6 py-3 rounded-lg font-medium transition-all duration-300;
+}
+
+.btn-primary {
+  @apply bg-grace-gold text-white hover:bg-opacity-90 shadow-lg hover:shadow-xl;
+}
+
+.btn-secondary {
+  @apply bg-grace-beige text-grace-dark hover:bg-gray-100 border border-grace-taupe;
+}
+
+.btn-outline {
+  @apply border-2 border-grace-gold text-grace-gold hover:bg-grace-gold hover:text-white;
+}
+
+/* Cards */
+.card {
+  @apply bg-white rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300 overflow-hidden;
+}
+
+.card-premium {
+  @apply bg-gradient-to-br from-grace-beige to-white rounded-2xl shadow-lg border border-grace-gold border-opacity-20;
+}
+
+/* Sections */
+.section {
+  @apply py-12 md:py-20 px-4 md:px-8;
+}
+
+.section-dark {
+  @apply bg-grace-dark text-white;
+}
+
+/* Utilities */
+.flex-center {
+  @apply flex items-center justify-center;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, #D4AF37 0%, #A39E93 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-border {
+  position: relative;
+  background: white;
+}
+
+.gradient-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  padding: 2px;
+  background: linear-gradient(135deg, #D4AF37 0%, #A39E93 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  border-radius: 0.75rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f1e8;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4AF37;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a39e93;
+}
