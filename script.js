@@ -228,6 +228,46 @@ window.addEventListener("scroll",()=>{
 
         }
 
+       document.getElementById("checkoutBtn").addEventListener("click", () => {
+
+    FlutterwaveCheckout({
+
+        public_key: "YOUR_PUBLIC_KEY",
+
+        tx_ref: "GW-" + Date.now(),
+
+        amount: 89.99,
+
+        currency: "GBP",
+
+        payment_options: "card,banktransfer",
+
+        redirect_url: "https://websites-uk.github.io/Gracewellness-business-website-store/success.html",
+
+        customer: {
+
+            email: "customer@example.com",
+
+            phone_number: "0000000000",
+
+            name: "Customer"
+
+        },
+
+        customizations: {
+
+            title: "Grace Wellness",
+
+            description: "Massage & Wellness Products",
+
+            logo: "https://websites-uk.github.io/Gracewellness-business-website-store/images/logo.png"
+
+        }
+
+       redirect_url:"https://websites-uk.github.io/Gracewellness-business-website-store/success.html"
+    });
+
+});
     });
 
 });
