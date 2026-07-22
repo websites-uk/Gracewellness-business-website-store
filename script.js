@@ -1,306 +1,151 @@
-/* =========================================
-   Grace Wellness
-   script.js
-========================================= */
+// =======================================
+// Grace Wellness
+// script.js
+// =======================================
 
-let selectedProduct = "";
-let selectedPrice = 0;
+// Wait until the page is fully loaded
+document.addEventListener("DOMContentLoaded", () => {
 
-document.querySelectorAll(".buy-now").forEach(button=>{
+    let selectedProduct = "";
+    let selectedPrice = "";
 
-button.addEventListener("click",()=>{
+    // Bootstrap Checkout Modal
+    const checkoutModal = new bootstrap.Modal(
+        document.getElementById("checkoutModal")
+    );
 
-selectedProduct=button.dataset.product;
+    // Buy Now buttons
+    const buyButtons = document.querySelectorAll(".buy-now");
 
-selectedPrice=button.dataset.price;
+    buyButtons.forEach(button => {
 
-document.getElementById("productName").value=selectedProduct;
+        button.addEventListener("click", () => {
 
-document.getElementById("checkoutAmount").value=selectedPrice;
+            selectedProduct = button.dataset.product;
+            selectedPrice = button.dataset.price;
 
-new bootstrap.Modal(
-document.getElementById("checkoutModal")
-).show();
+            // Fill checkout form
+            document.getElementById("productName").value = selectedProduct;
+            document.getElementById("checkoutAmount").value = "£" + selectedPrice;
 
-});
+            checkoutModal.show();
 
-});
+        });
 
-// ----------------------------
-// Toast Message
-// ----------------------------
+    });
 
-function showToast(message) {
+    // Checkout Form
+    const checkoutForm = document.getElementById("checkoutForm");
 
-    const toast = document.createElement("div");
+    checkoutForm.addEventListener("submit", function (e) {
 
-    toast.className = "toast-message";
+        e.preventDefault();
 
-    toast.innerHTML = `
-        <i class="bi bi-check-circle-fill"></i>
-        ${message}
-    `;
+        const customerName =
+            document.getElementById("customerName").value;
 
-    document.body.appendChild(toast);
+        const customerEmail =
+            document.getElementById("customerEmail").value;
 
-    setTimeout(() => {
-        toast.classList.add("show");
-    }, 100);
+        const customerPhone =
+            document.getElementById("customerPhone").value;
 
-    setTimeout(() => {
+        startFlutterwavePayment(
+            customerName,
+            customerEmail,
+            customerPhone,
+            selectedProduct,
+            selectedPrice
+        );
 
-        toast.classList.remove("show");
+    });
+    // =======================================
+    // Flutterwave Checkout
+    // =======================================
 
-        setTimeout(() => {
+    function startFlutterwavePayment(
+        customerName,
+        customerEmail,
+        customerPhone,
+        product,
+        amount
+    ) {
 
-            toast.remove();
+        FlutterwaveCheckout({
 
-        },300);
+            public_key: "FLWPUBK-2b01ca9653cbf025d8843ce27e456c4b-X",
 
-    },2500);
+            tx_ref: "GW-" + Date.now(),
 
-}
+            amount: parseFloat(amount),
 
-});
+            currency: "GBP",
 
-// ----------------------------
-// Newsletter
-// ----------------------------
+            payment_options: "card,banktransfer,applepay,googlepay",
 
-const newsletter=document.getElementById("newsletterForm");
+            customer: {
 
-if(newsletter){
+                email: customerEmail,
 
-newsletter.addEventListener("submit",(e)=>{
+                phone_number: customerPhone,
 
-e.preventDefault();
+                name: customerName
 
-showToast("Thank you for subscribing!");
+            },
 
-newsletter.reset();
+            customizations: {
 
-});
+                title: "Grace Wellness",
 
-}
+                description: product,
 
-// ----------------------------
-// Smooth Scroll
-// ----------------------------
+                logo: "images/logo.png"
 
-document.querySelectorAll('a[href^="#"]').forEach(anchor=>{
+            },
 
-anchor.addEventListener("click",function(e){
+            redirect_url:
+            "https://websites-uk.github.io/Gracewellness-business-website-store/success.html"
 
-e.preventDefault();
+        });
 
-const target=document.querySelector(this.getAttribute("href"));
+    }
 
-if(target){
+    // =======================================
+    // Live Product Search
+    // =======================================
 
-target.scrollIntoView({
+    const searchBox = document.getElementById("search");
 
-behavior:"smooth"
+    if (searchBox) {
 
-});
+        searchBox.addEventListener("keyup", function () {
 
-}
+            const keyword = this.value.toLowerCase();
 
-});
+            const cards =
+                document.querySelectorAll(".product-card");
 
-}
+            cards.forEach(card => {
 
+                const title =
+                    card.querySelector("h5")
+                        .innerText
+                        .toLowerCase();
 
-// ----------------------------
-// Navbar Shadow on Scroll
-// ----------------------------
+                if (title.includes(keyword)) {
 
-const navbar=document.querySelector(".navbar");
+                    card.parentElement.style.display = "";
 
-window.addEventListener("scroll",()=>{
+                } else {
 
-    if(window.scrollY>50){
+                    card.parentElement.style.display = "none";
 
-        navbar.classList.add("shadow");
+                }
 
-    }else{
+            });
 
-        navbar.classList.remove("shadow");
+        });
 
     }
 
 });
-
-
-// ----------------------------
-// Active Navigation
-// ----------------------------
-
-const sections=document.querySelectorAll("section");
-const navLinks=document.querySelectorAll(".nav-link");
-
-window.addEventListener("scroll",()=>{
-
-    let current="";
-
-    sections.forEach(section=>{
-
-        const top=section.offsetTop-120;
-
-        if(window.scrollY>=top){
-
-            current=section.getAttribute("id");
-
-        }
-
-    });
-
-    navLinks.forEach(link=>{
-
-        link.classList.remove("active");
-
-        if(link.getAttribute("href")==="#"+current){
-
-            link.classList.add("active");
-
-        }
-
-       document.getElementById("checkoutBtn").addEventListener("click", () => {
-
-    FlutterwaveCheckout({
-
-        public_key: "YOUR_PUBLIC_KEY",
-
-        tx_ref: "GW-" + Date.now(),
-
-        amount: 89.99,
-
-        currency: "GBP",
-
-        payment_options: "card,banktransfer",
-
-        redirect_url: "https://websites-uk.github.io/Gracewellness-business-website-store/success.html",
-
-        customer: {
-
-            email: "customer@example.com",
-
-            phone_number: "0000000000",
-
-            name: "Customer"
-
-        },
-
-        customizations: {
-
-            title: "Grace Wellness",
-
-            description: "Massage & Wellness Products",
-
-            logo: "https://websites-uk.github.io/Gracewellness-business-website-store/images/logo.png"
-
-        }
-
-       redirect_url:"https://websites-uk.github.io/Gracewellness-business-website-store/success.html"
-    });
-
-       const checkoutForm=document.getElementById("checkoutForm");
-
-if(checkoutForm){
-
-checkoutForm.addEventListener("submit",function(e){
-
-e.preventDefault();
-
-const name=document.getElementById("customerName").value;
-
-const email=document.getElementById("customerEmail").value;
-
-const phone=document.getElementById("customerPhone").value;
-
-const amount=document.getElementById("checkoutAmount").value;
-
-FlutterwaveCheckout({
-
-public_key:"FLWPUBK-2b01ca9653cbf025d8843ce27e456c4b-X",
-
-tx_ref:"GW-"+Date.now(),
-
-amount:selectedPrice,
-
-currency:"GBP",
-
-payment_options:"card,banktransfer",
-
-customer:{
-
-email:email,
-
-phone_number:phone,
-
-name:name
-
-},
-
-customizations:{
-
-title:"Grace Wellness",
-
-description:"Massage & Wellness Store",
-
-logo:"images/logo.png"
-
-},
-   customizations:{
-
-title:"Grace Wellness",
-
-description:selectedProduct,
-
-logo:"images/logo.png"
-
-}
-
-callback:function(response){
-
-if(response.status==="successful"){
-
-alert("Payment Successful!");
-
-cart=[];
-
-updateCart();
-
-document.getElementById("checkoutForm").reset();
-
-bootstrap.Modal.getInstance(
-
-document.getElementById("checkoutModal")
-
-).hide();
-
-}
-
-},
-
-onclose:function(){
-
-console.log("Checkout closed.");
-
-}
-
-});
-
-});
-
-}
-});
-    });
-
-});
-
-
-// ----------------------------
-// Footer Year
-// ----------------------------
-
-console.log("Grace Wellness Website Ready");
