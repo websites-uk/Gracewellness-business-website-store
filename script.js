@@ -225,7 +225,7 @@ public_key:"FLWPUBK-2b01ca9653cbf025d8843ce27e456c4b-X",
 
 tx_ref:"GW-"+Date.now(),
 
-amount:amount,
+amount:selectedPrice,
 
 currency:"GBP",
 
@@ -250,6 +250,15 @@ description:"Massage & Wellness Store",
 logo:"images/logo.png"
 
 },
+   customizations:{
+
+title:"Grace Wellness",
+
+description:selectedProduct,
+
+logo:"images/logo.png"
+
+}
 
 callback:function(response){
 
