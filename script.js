@@ -3,18 +3,28 @@
    script.js
 ========================================= */
 
-// ----------------------------
-// Shopping Cart
-// ----------------------------
+let selectedProduct = "";
+let selectedPrice = 0;
 
-let cart = [];
+document.querySelectorAll(".buy-now").forEach(button=>{
 
-const cartCount = document.getElementById("cart-count");
-const addButtons = document.querySelectorAll(".add-cart");
+button.addEventListener("click",()=>{
 
-function updateCart() {
-    cartCount.textContent = cart.length;
-}
+selectedProduct=button.dataset.product;
+
+selectedPrice=button.dataset.price;
+
+document.getElementById("productName").value=selectedProduct;
+
+document.getElementById("checkoutAmount").value=selectedPrice;
+
+new bootstrap.Modal(
+document.getElementById("checkoutModal")
+).show();
+
+});
+
+});
 
 // ----------------------------
 // Toast Message
@@ -50,34 +60,6 @@ function showToast(message) {
     },2500);
 
 }
-
-// ----------------------------
-// Add To Cart
-// ----------------------------
-
-addButtons.forEach(button=>{
-
-button.addEventListener("click",()=>{
-
-const card=button.closest(".card");
-
-const name=card.querySelector("h5").innerText;
-
-const price=card.querySelector(".text-success").innerText;
-
-cart.push({
-
-name,
-
-price
-
-});
-
-updateCart();
-
-showToast(`${name} added to cart`);
-
-});
 
 });
 
@@ -118,55 +100,6 @@ if(target){
 target.scrollIntoView({
 
 behavior:"smooth"
-
-});
-
-}
-
-});
-
-});
-/* =========================================
-   Grace Wellness
-   script.js - Part 2
-========================================= */
-
-// ----------------------------
-// Cart Button
-// ----------------------------
-
-const cartButton = document.getElementById("cartButton");
-
-if(cartButton){
-
-const cartButton = document.getElementById("cartButton");
-
-if(cartButton){
-
-cartButton.addEventListener("click",()=>{
-
-if(cart.length===0){
-
-alert("Your cart is empty.");
-
-return;
-
-}
-
-let total=0;
-
-cart.forEach(item=>{
-
-total+=parseFloat(item.price.replace("£",""));
-
-});
-
-document.getElementById("checkoutAmount").value=
-total.toFixed(2);
-
-new bootstrap.Modal(
-document.getElementById("checkoutModal")
-).show();
 
 });
 
