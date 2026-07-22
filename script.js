@@ -139,35 +139,38 @@ const cartButton = document.getElementById("cartButton");
 
 if(cartButton){
 
+const cartButton = document.getElementById("cartButton");
+
+if(cartButton){
+
 cartButton.addEventListener("click",()=>{
 
-    if(cart.length===0){
+if(cart.length===0){
 
-        alert("Your cart is currently empty.");
+alert("Your cart is empty.");
 
-        return;
+return;
 
-    }
+}
 
-    let total=0;
+let total=0;
 
-    let summary="Your Cart\n\n";
+cart.forEach(item=>{
 
-    cart.forEach((item,index)=>{
+total+=parseFloat(item.price.replace("£",""));
 
-        summary += `${index+1}. ${item.name} - ${item.price}\n`;
+});
 
-        total += parseFloat(item.price.replace("£",""));
+document.getElementById("checkoutAmount").value=
+total.toFixed(2);
 
-    });
+new bootstrap.Modal(
+document.getElementById("checkoutModal")
+).show();
 
-    summary += "\n-----------------------\n";
+});
 
-    summary += `Total: £${total.toFixed(2)}\n\n`;
-
-    summary += "To complete your purchase,\nclick OK and then use the Booking or Contact form.\nFlutterwave checkout will be connected once customer details are collected.";
-
-    alert(summary);
+}
 
 });
 
@@ -267,6 +270,87 @@ window.addEventListener("scroll",()=>{
        redirect_url:"https://websites-uk.github.io/Gracewellness-business-website-store/success.html"
     });
 
+       const checkoutForm=document.getElementById("checkoutForm");
+
+if(checkoutForm){
+
+checkoutForm.addEventListener("submit",function(e){
+
+e.preventDefault();
+
+const name=document.getElementById("customerName").value;
+
+const email=document.getElementById("customerEmail").value;
+
+const phone=document.getElementById("customerPhone").value;
+
+const amount=document.getElementById("checkoutAmount").value;
+
+FlutterwaveCheckout({
+
+public_key:"FLWPUBK-2b01ca9653cbf025d8843ce27e456c4b-X",
+
+tx_ref:"GW-"+Date.now(),
+
+amount:amount,
+
+currency:"GBP",
+
+payment_options:"card,banktransfer",
+
+customer:{
+
+email:email,
+
+phone_number:phone,
+
+name:name
+
+},
+
+customizations:{
+
+title:"Grace Wellness",
+
+description:"Massage & Wellness Store",
+
+logo:"images/logo.png"
+
+},
+
+callback:function(response){
+
+if(response.status==="successful"){
+
+alert("Payment Successful!");
+
+cart=[];
+
+updateCart();
+
+document.getElementById("checkoutForm").reset();
+
+bootstrap.Modal.getInstance(
+
+document.getElementById("checkoutModal")
+
+).hide();
+
+}
+
+},
+
+onclose:function(){
+
+console.log("Checkout closed.");
+
+}
+
+});
+
+});
+
+}
 });
     });
 
