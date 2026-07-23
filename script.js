@@ -79,9 +79,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             amount: parseFloat(amount),
 
-            currency: "GBP","USD"
+            currency: "GBP",
 
-            payment_options: "card,banktransfer,applepay,googlepay",
+            payment_options: "card,banktransfer,applepay,googlepay,USDT",
 
             customer: {
 
