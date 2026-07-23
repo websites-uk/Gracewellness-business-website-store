@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             currency: "GBP",
 
-            payment_options: "card,banktransfer,applepay,googlepay,USDT",
+            payment_options: "card,banktransfer,applepay,googlepay",
 
             customer: {
 
